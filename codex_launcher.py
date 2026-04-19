@@ -148,14 +148,19 @@ class CodexLauncherApp(tk.Tk):
         form = ttk.Frame(root, style="Panel.TFrame", padding=10)
         form.pack(fill="x")
 
-        ttk.Label(form, text="备注", style="App.TLabel").grid(row=0, column=0, padx=(0, 6), pady=4, sticky="w")
-        ttk.Entry(form, textvariable=self.note_var, width=18, style="App.TEntry").grid(row=0, column=1, padx=(0, 10), pady=4, sticky="we")
+        top_actions = ttk.Frame(form, style="Panel.TFrame")
+        top_actions.grid(row=0, column=4, columnspan=2, sticky="e", pady=(0, 6))
+        ttk.Button(top_actions, text="启动勾选", command=self.launch_checked, style="Primary.TButton").pack(side="right")
+        ttk.Button(top_actions, text="一键全部启动", command=self.launch_all, style="Neutral.TButton").pack(side="right", padx=(8, 0))
 
-        ttk.Label(form, text="会话号", style="App.TLabel").grid(row=0, column=2, padx=(0, 6), pady=4, sticky="w")
-        ttk.Entry(form, textvariable=self.session_var, width=42, style="App.TEntry").grid(row=0, column=3, padx=(0, 10), pady=4, sticky="we")
+        ttk.Label(form, text="备注", style="App.TLabel").grid(row=1, column=0, padx=(0, 6), pady=4, sticky="w")
+        ttk.Entry(form, textvariable=self.note_var, width=18, style="App.TEntry").grid(row=1, column=1, padx=(0, 10), pady=4, sticky="we")
 
-        ttk.Button(form, text="添加/更新", command=self.add_or_update_session, style="Primary.TButton").grid(row=0, column=4, padx=(0, 6), pady=4)
-        ttk.Button(form, text="清空输入", command=self.clear_inputs, style="Neutral.TButton").grid(row=0, column=5, pady=4)
+        ttk.Label(form, text="会话号", style="App.TLabel").grid(row=1, column=2, padx=(0, 6), pady=4, sticky="w")
+        ttk.Entry(form, textvariable=self.session_var, width=42, style="App.TEntry").grid(row=1, column=3, padx=(0, 10), pady=4, sticky="we")
+
+        ttk.Button(form, text="添加/更新", command=self.add_or_update_session, style="Primary.TButton").grid(row=1, column=4, padx=(0, 6), pady=4)
+        ttk.Button(form, text="清空输入", command=self.clear_inputs, style="Neutral.TButton").grid(row=1, column=5, pady=4)
 
         form.columnconfigure(1, weight=1)
         form.columnconfigure(3, weight=2)
@@ -194,9 +199,7 @@ class CodexLauncherApp(tk.Tk):
         ttk.Checkbutton(actions, text="启用 YOLO 模式", variable=self.yolo_var, style="App.TCheckbutton").pack(side="left")
         ttk.Button(actions, text="新建会话", command=self.run_new_session_shortcut, style="Neutral.TButton").pack(side="left", padx=(10, 0))
 
-        ttk.Button(actions, text="启动勾选", command=self.launch_checked, style="Primary.TButton").pack(side="right")
-        ttk.Button(actions, text="一键全部启动", command=self.launch_all, style="Neutral.TButton").pack(side="right", padx=(8, 0))
-        ttk.Button(actions, text="删除勾选", command=self.delete_checked, style="Danger.TButton").pack(side="right", padx=(8, 0))
+        ttk.Button(actions, text="删除勾选", command=self.delete_checked, style="Danger.TButton").pack(side="right")
 
         status = ttk.Label(root, textvariable=self.status_var, anchor="w", style="Status.TLabel")
         status.pack(fill="x", pady=(8, 0))
