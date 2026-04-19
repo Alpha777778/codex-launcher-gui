@@ -30,7 +30,7 @@ class CodexLauncherApp(tk.Tk):
         self.title("Codex 启动器")
         self.geometry("820x520")
         self.minsize(760, 470)
-        self.configure(bg="#0f1115")
+        self.configure(bg="#f3f4f6")
 
         self.style = ttk.Style(self)
         self.setup_styles()
@@ -50,13 +50,13 @@ class CodexLauncherApp(tk.Tk):
     def setup_styles(self) -> None:
         self.style.theme_use("clam")
 
-        bg = "#0f1115"
-        panel = "#171a21"
-        panel_soft = "#1d2230"
-        text = "#e6e9ef"
-        muted = "#9aa4b2"
-        primary = "#3b82f6"
-        danger = "#ef4444"
+        bg = "#f3f4f6"
+        panel = "#ffffff"
+        panel_soft = "#eef2ff"
+        text = "#111827"
+        muted = "#6b7280"
+        primary = "#2563eb"
+        danger = "#dc2626"
 
         self.style.configure("App.TFrame", background=bg)
         self.style.configure("Panel.TFrame", background=panel)
@@ -69,11 +69,11 @@ class CodexLauncherApp(tk.Tk):
 
         self.style.configure(
             "App.TEntry",
-            fieldbackground="#111827",
+            fieldbackground="#ffffff",
             foreground=text,
-            bordercolor="#2a3140",
-            lightcolor="#2a3140",
-            darkcolor="#2a3140",
+            bordercolor="#d1d5db",
+            lightcolor="#d1d5db",
+            darkcolor="#d1d5db",
             insertcolor=text,
             padding=6,
         )
@@ -87,18 +87,18 @@ class CodexLauncherApp(tk.Tk):
             padding=(12, 6),
             font=("Microsoft YaHei UI", 9, "bold"),
         )
-        self.style.map("Primary.TButton", background=[("active", "#2563eb"), ("pressed", "#1d4ed8")])
+        self.style.map("Primary.TButton", background=[("active", "#1d4ed8"), ("pressed", "#1e40af")])
 
         self.style.configure(
             "Neutral.TButton",
-            background="#2a3140",
+            background="#e5e7eb",
             foreground=text,
             borderwidth=0,
             focuscolor="none",
             padding=(12, 6),
             font=("Microsoft YaHei UI", 9),
         )
-        self.style.map("Neutral.TButton", background=[("active", "#364055"), ("pressed", "#1f2937")])
+        self.style.map("Neutral.TButton", background=[("active", "#d1d5db"), ("pressed", "#cbd5e1")])
 
         self.style.configure(
             "Danger.TButton",
@@ -109,32 +109,32 @@ class CodexLauncherApp(tk.Tk):
             padding=(12, 6),
             font=("Microsoft YaHei UI", 9),
         )
-        self.style.map("Danger.TButton", background=[("active", "#dc2626"), ("pressed", "#b91c1c")])
+        self.style.map("Danger.TButton", background=[("active", "#b91c1c"), ("pressed", "#991b1b")])
 
         self.style.configure("App.TCheckbutton", background=panel_soft, foreground=text, font=("Microsoft YaHei UI", 9))
         self.style.map("App.TCheckbutton", foreground=[("active", text)])
 
         self.style.configure(
             "Treeview",
-            background="#111827",
-            fieldbackground="#111827",
+            background="#ffffff",
+            fieldbackground="#ffffff",
             foreground=text,
-            bordercolor="#2a3140",
+            bordercolor="#d1d5db",
             rowheight=30,
             font=("Consolas", 10),
         )
-        self.style.map("Treeview", background=[("selected", "#1d4ed8")], foreground=[("selected", "#ffffff")])
+        self.style.map("Treeview", background=[("selected", "#dbeafe")], foreground=[("selected", "#1e3a8a")])
         self.style.configure(
             "Treeview.Heading",
-            background="#1f2937",
-            foreground="#dbe2ea",
+            background="#f3f4f6",
+            foreground="#374151",
             relief="flat",
             font=("Microsoft YaHei UI", 9, "bold"),
             padding=(6, 7),
         )
-        self.style.map("Treeview.Heading", background=[("active", "#273449")])
+        self.style.map("Treeview.Heading", background=[("active", "#e5e7eb")])
 
-        self.style.configure("Vertical.TScrollbar", background="#1f2937", troughcolor="#111827", bordercolor="#111827")
+        self.style.configure("Vertical.TScrollbar", background="#e5e7eb", troughcolor="#f9fafb", bordercolor="#e5e7eb")
 
     def build_ui(self) -> None:
         root = ttk.Frame(self, style="App.TFrame", padding=12)
