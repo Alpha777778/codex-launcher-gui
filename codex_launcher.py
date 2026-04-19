@@ -28,8 +28,12 @@ class CodexLauncherApp(tk.Tk):
     def __init__(self) -> None:
         super().__init__()
         self.title("Codex 启动器")
-        self.geometry("760x470")
-        self.minsize(700, 420)
+        self.geometry("820x520")
+        self.minsize(760, 470)
+        self.configure(bg="#0f1115")
+
+        self.style = ttk.Style(self)
+        self.setup_styles()
 
         self.data_path = Path(__file__).with_name("sessions.json")
         self.sessions = self.load_sessions()
@@ -43,23 +47,123 @@ class CodexLauncherApp(tk.Tk):
         self.build_ui()
         self.refresh_table()
 
+    def setup_styles(self) -> None:
+        self.style.theme_use("clam")
+
+        bg = "#0f1115"
+        panel = "#171a21"
+        panel_soft = "#1d2230"
+        text = "#e6e9ef"
+        muted = "#9aa4b2"
+        primary = "#3b82f6"
+        danger = "#ef4444"
+
+        self.style.configure("App.TFrame", background=bg)
+        self.style.configure("Panel.TFrame", background=panel)
+        self.style.configure("PanelSoft.TFrame", background=panel_soft)
+
+        self.style.configure("App.TLabel", background=panel, foreground=text, font=("Microsoft YaHei UI", 10))
+        self.style.configure("Title.TLabel", background=bg, foreground=text, font=("Microsoft YaHei UI", 13, "bold"))
+        self.style.configure("Hint.TLabel", background=bg, foreground=muted, font=("Microsoft YaHei UI", 9))
+        self.style.configure("Status.TLabel", background=bg, foreground=muted, font=("Microsoft YaHei UI", 9))
+
+        self.style.configure(
+            "App.TEntry",
+            fieldbackground="#111827",
+            foreground=text,
+            bordercolor="#2a3140",
+            lightcolor="#2a3140",
+            darkcolor="#2a3140",
+            insertcolor=text,
+            padding=6,
+        )
+
+        self.style.configure(
+            "Primary.TButton",
+            background=primary,
+            foreground="#ffffff",
+            borderwidth=0,
+            focuscolor="none",
+            padding=(12, 6),
+            font=("Microsoft YaHei UI", 9, "bold"),
+        )
+        self.style.map("Primary.TButton", background=[("active", "#2563eb"), ("pressed", "#1d4ed8")])
+
+        self.style.configure(
+            "Neutral.TButton",
+            background="#2a3140",
+            foreground=text,
+            borderwidth=0,
+            focuscolor="none",
+            padding=(12, 6),
+            font=("Microsoft YaHei UI", 9),
+        )
+        self.style.map("Neutral.TButton", background=[("active", "#364055"), ("pressed", "#1f2937")])
+
+        self.style.configure(
+            "Danger.TButton",
+            background=danger,
+            foreground="#ffffff",
+            borderwidth=0,
+            focuscolor="none",
+            padding=(12, 6),
+            font=("Microsoft YaHei UI", 9),
+        )
+        self.style.map("Danger.TButton", background=[("active", "#dc2626"), ("pressed", "#b91c1c")])
+
+        self.style.configure("App.TCheckbutton", background=panel_soft, foreground=text, font=("Microsoft YaHei UI", 9))
+        self.style.map("App.TCheckbutton", foreground=[("active", text)])
+
+        self.style.configure(
+            "Treeview",
+            background="#111827",
+            fieldbackground="#111827",
+            foreground=text,
+            bordercolor="#2a3140",
+            rowheight=30,
+            font=("Consolas", 10),
+        )
+        self.style.map("Treeview", background=[("selected", "#1d4ed8")], foreground=[("selected", "#ffffff")])
+        self.style.configure(
+            "Treeview.Heading",
+            background="#1f2937",
+            foreground="#dbe2ea",
+            relief="flat",
+            font=("Microsoft YaHei UI", 9, "bold"),
+            padding=(6, 7),
+        )
+        self.style.map("Treeview.Heading", background=[("active", "#273449")])
+
+        self.style.configure("Vertical.TScrollbar", background="#1f2937", troughcolor="#111827", bordercolor="#111827")
+
     def build_ui(self) -> None:
-        form = ttk.Frame(self, padding=10)
+        root = ttk.Frame(self, style="App.TFrame", padding=12)
+        root.pack(fill="both", expand=True)
+
+        header = ttk.Frame(root, style="App.TFrame")
+        header.pack(fill="x", pady=(0, 10))
+        ttk.Label(header, text="Codex 启动器", style="Title.TLabel").pack(anchor="w")
+        ttk.Label(header, text="勾选会话后可批量启动，支持一键全部与 YOLO 模式。", style="Hint.TLabel").pack(anchor="w", pady=(2, 0))
+
+        form = ttk.Frame(root, style="Panel.TFrame", padding=10)
         form.pack(fill="x")
 
-        ttk.Label(form, text="备注").grid(row=0, column=0, padx=(0, 6), pady=4, sticky="w")
-        ttk.Entry(form, textvariable=self.note_var, width=18).grid(row=0, column=1, padx=(0, 10), pady=4, sticky="we")
+        ttk.Label(form, text="备注", style="App.TLabel").grid(row=0, column=0, padx=(0, 6), pady=4, sticky="w")
+        ttk.Entry(form, textvariable=self.note_var, width=18, style="App.TEntry").grid(row=0, column=1, padx=(0, 10), pady=4, sticky="we")
 
-        ttk.Label(form, text="会话号").grid(row=0, column=2, padx=(0, 6), pady=4, sticky="w")
-        ttk.Entry(form, textvariable=self.session_var, width=40).grid(row=0, column=3, padx=(0, 10), pady=4, sticky="we")
+        ttk.Label(form, text="会话号", style="App.TLabel").grid(row=0, column=2, padx=(0, 6), pady=4, sticky="w")
+        ttk.Entry(form, textvariable=self.session_var, width=42, style="App.TEntry").grid(row=0, column=3, padx=(0, 10), pady=4, sticky="we")
 
-        ttk.Button(form, text="添加/更新", command=self.add_or_update_session).grid(row=0, column=4, padx=(0, 6), pady=4)
-        ttk.Button(form, text="清空输入", command=self.clear_inputs).grid(row=0, column=5, pady=4)
+        ttk.Button(form, text="添加/更新", command=self.add_or_update_session, style="Primary.TButton").grid(row=0, column=4, padx=(0, 6), pady=4)
+        ttk.Button(form, text="清空输入", command=self.clear_inputs, style="Neutral.TButton").grid(row=0, column=5, pady=4)
 
         form.columnconfigure(1, weight=1)
         form.columnconfigure(3, weight=2)
 
-        table_wrap = ttk.Frame(self, padding=(10, 0, 10, 0))
+        table_outer = ttk.Frame(root, style="Panel.TFrame", padding=(10, 10, 10, 8))
+        table_outer.pack(fill="both", expand=True, pady=(10, 0))
+
+        table_wrap = ttk.Frame(table_outer, style="Panel.TFrame")
         table_wrap.pack(fill="both", expand=True)
 
         self.table = ttk.Treeview(
@@ -72,30 +176,30 @@ class CodexLauncherApp(tk.Tk):
         self.table.heading("note", text="备注")
         self.table.heading("session_id", text="会话号")
 
-        self.table.column("checked", width=56, anchor="center", stretch=False)
-        self.table.column("note", width=150, anchor="w", stretch=False)
-        self.table.column("session_id", width=500, anchor="w", stretch=True)
+        self.table.column("checked", width=64, anchor="center", stretch=False)
+        self.table.column("note", width=160, anchor="w", stretch=False)
+        self.table.column("session_id", width=560, anchor="w", stretch=True)
 
         self.table.pack(side="left", fill="both", expand=True)
         self.table.bind("<Button-1>", self.on_tree_click)
         self.table.bind("<Double-1>", self.load_selected_to_inputs)
 
-        scrollbar = ttk.Scrollbar(table_wrap, orient="vertical", command=self.table.yview)
+        scrollbar = ttk.Scrollbar(table_wrap, orient="vertical", command=self.table.yview, style="Vertical.TScrollbar")
         scrollbar.pack(side="right", fill="y")
         self.table.configure(yscrollcommand=scrollbar.set)
 
-        actions = ttk.Frame(self, padding=10)
-        actions.pack(fill="x")
+        actions = ttk.Frame(root, style="PanelSoft.TFrame", padding=10)
+        actions.pack(fill="x", pady=(10, 0))
 
-        ttk.Checkbutton(actions, text="启用 YOLO 模式", variable=self.yolo_var).pack(side="left")
-        ttk.Button(actions, text="新建会话", command=self.run_new_session_shortcut).pack(side="left", padx=(10, 0))
+        ttk.Checkbutton(actions, text="启用 YOLO 模式", variable=self.yolo_var, style="App.TCheckbutton").pack(side="left")
+        ttk.Button(actions, text="新建会话", command=self.run_new_session_shortcut, style="Neutral.TButton").pack(side="left", padx=(10, 0))
 
-        ttk.Button(actions, text="启动勾选", command=self.launch_checked).pack(side="right")
-        ttk.Button(actions, text="一键全部启动", command=self.launch_all).pack(side="right", padx=(8, 0))
-        ttk.Button(actions, text="删除勾选", command=self.delete_checked).pack(side="right", padx=(8, 0))
+        ttk.Button(actions, text="启动勾选", command=self.launch_checked, style="Primary.TButton").pack(side="right")
+        ttk.Button(actions, text="一键全部启动", command=self.launch_all, style="Neutral.TButton").pack(side="right", padx=(8, 0))
+        ttk.Button(actions, text="删除勾选", command=self.delete_checked, style="Danger.TButton").pack(side="right", padx=(8, 0))
 
-        status = ttk.Label(self, textvariable=self.status_var, anchor="w", padding=(10, 0, 10, 10))
-        status.pack(fill="x")
+        status = ttk.Label(root, textvariable=self.status_var, anchor="w", style="Status.TLabel")
+        status.pack(fill="x", pady=(8, 0))
 
     def load_sessions(self) -> list[dict[str, str]]:
         if not self.data_path.exists():
